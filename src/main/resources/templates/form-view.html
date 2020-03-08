@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Form View</title>
+</head>
+<body>
+	<form action="/form-page" method="post">
+		<p th:if="${#fields.hasErrors('formModel.value')}" th:errors="*{formModel.value}"></p>
+	   <input name="value" th:value="${formModel.value}"/> 
+	   <br/>
+	    <input type="submit" value="Submit">
+	</form>
+</body>
+</html>
