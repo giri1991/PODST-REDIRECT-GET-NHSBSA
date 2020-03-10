@@ -12,24 +12,30 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class FormController {
-	
-  private FormModel formModel = new FormModel();
 
-  @PostMapping("/form-page")
-  public String handlePostRequest(@Valid @ModelAttribute("formModel") FormModel formModel, BindingResult bindingResult, RedirectAttributes attr) {
-	  this.formModel = formModel;
-	  if (bindingResult.hasErrors()) {
-		  attr.addFlashAttribute("formModel", bindingResult);
-		  //	attr.addFlashAttribute("formModel", formModel);
-          return "redirect:/form-page";
-      }
-	  
-      return "redirect:/form-page";
-  }
+	private FormModel formModel = new FormModel();
 
-  @GetMapping("/form-page")
-  public String handleGetRequest(Model model) {
-      model.addAttribute("formModel", formModel);
-      return "form-view";
-  }
+	@PostMapping("/form-page")
+	public String handlePostRequest(@Valid @ModelAttribute("formModel") FormModel formModel,
+			BindingResult bindingResult, RedirectAttributes attr) {
+		if (bindingResult.hasErrors()) {
+			attr.addFlashAttribute("bindingResult", bindingResult);
+			return "redirect:/form-page";
+		}
+
+		// this setting of the formModel just represents persisting it in a db etc, only
+		// upon submitting successful data
+		this.formModel = formModel;
+		return "redirect:/form-page";
+	}
+
+	@GetMapping("/form-page")
+	public String handleGetRequest(Model model) {
+		model.addAttribute("formModel", formModel);
+		if (!model.containsAttribute("bindingResult")) {
+			model.addAttribute("bindingResult", new Object());
+		}
+
+		return "form-view";
+	}
 }

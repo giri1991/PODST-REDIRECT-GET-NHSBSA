@@ -6,7 +6,7 @@
 </head>
 <body>
 	<form action="/form-page" method="post">
-		<p th:if="${#fields.hasErrors('formModel.value')}" th:errors="*{formModel.value}"></p>
+		<p th:if="${#fields.hasErrors('bindingResult')}" th:errors="*{bindingResult}"></p>
 	   <input name="value" th:value="${formModel.value}"/> 
 	   <br/>
 	    <input type="submit" value="Submit">
